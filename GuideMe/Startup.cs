@@ -53,10 +53,12 @@ namespace GuideMe
 
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
-            services.AddScoped<UserService>();
+            services.AddAutoMapper(typeof(Startup));
+
+            //Add all the services 
+            RegisterServices(services);
 
             services.AddControllers();
-
 
             services.AddSwaggerGen(c =>
             {
@@ -84,6 +86,13 @@ namespace GuideMe
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void RegisterServices(IServiceCollection services)
+        {
+            services.AddScoped<UserService>();
+            services.AddScoped<GuideExperienceService>();
+            services.AddScoped<GuideExperienceViewDataService>();
         }
     }
 }
