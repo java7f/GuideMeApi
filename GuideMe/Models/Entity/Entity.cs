@@ -9,7 +9,7 @@ namespace GuideMe.Models
     /// Represents an Entity in MongoDB
     /// </summary>
     [BsonIgnoreExtraElements(Inherited = true)]
-    public class Entity : IEntity
+    public abstract class Entity : IEntity
     {
         private DateTime _createdOn;
         public Entity()
@@ -18,6 +18,7 @@ namespace GuideMe.Models
         }
 
         [BsonElement(Order = 0)]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
         [BsonElement(Order = 1)]
@@ -26,7 +27,7 @@ namespace GuideMe.Models
             get
             {
                 if (_createdOn == null || _createdOn == DateTime.MinValue)
-                    _createdOn = ObjectId.CreationTime;
+                    _createdOn = DateTime.Now;
                 return _createdOn;
             }
             set
@@ -34,7 +35,5 @@ namespace GuideMe.Models
                 _createdOn = value;
             }
         }
-
-        public ObjectId ObjectId => ObjectId.Parse(Id);
     }
 }

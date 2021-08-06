@@ -1,5 +1,8 @@
+using Azure.Storage.Blobs;
+using GuideMe.Interfaces.AzureBlob;
 using GuideMe.Interfaces.Mongo;
 using GuideMe.Models;
+using GuideMe.Models.AzureBlob;
 using GuideMe.Services;
 using GuideMe.Utils.Mongo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -50,10 +53,18 @@ namespace GuideMe
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
 
             services.AddSingleton<IDatabaseSettings>(x => x.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            
+            services.Configure<BlobStoreSettings>(Configuration.GetSection(nameof(BlobStoreSettings)));
+
+            services.AddSingleton<IBlobStoreSettings>(x => x.GetRequiredService<IOptions<BlobStoreSettings>>().Value);
 
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddScoped(_ => {
+                return new BlobServiceClient(Configuration.GetSection(nameof(BlobStoreSettings))["ConnectionString"]);
+            });
 
             //Add all the services 
             RegisterServices(services);
@@ -93,6 +104,7 @@ namespace GuideMe
             services.AddScoped<UserService>();
             services.AddScoped<GuideExperienceService>();
             services.AddScoped<GuideExperienceViewDataService>();
+            services.AddScoped<FileManagerService>();
         }
     }
 }

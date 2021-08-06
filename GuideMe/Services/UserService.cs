@@ -1,5 +1,6 @@
 ﻿using GuideMe.Interfaces.Mongo;
 using GuideMe.Models.Account;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,11 @@ namespace GuideMe.Services
     public class UserService
     {
         private readonly IMongoRepository<User> _userRepository;
-        public UserService(IMongoRepository<User> userRepository)
+        private readonly FileManagerService _fileManagerService;
+        public UserService(IMongoRepository<User> userRepository, FileManagerService fileManagerService)
         {
             _userRepository = userRepository;
+            _fileManagerService = fileManagerService;
         }
 
         public User Get(string userId)
@@ -27,11 +30,25 @@ namespace GuideMe.Services
 
         public async Task Insert(User user)
         {
+            try
+            {
+                if (user.ProfilePhoto != null)
+                    user.ProfilePhotoUrl = await _fileManagerService.UploadProfilePhoto(user.ProfilePhoto);
+                //if (string.IsNullOrEmpty(user.Id))
+                //    user.Id = ObjectId.GenerateNewId().ToString();
+            }
+            catch (Exception e) { throw (e); }
             await _userRepository.InsertOneAsync(user);
         }
 
         public async Task Update(User user)
         {
+            try
+            {
+                if (user.ProfilePhoto != null)
+                    user.ProfilePhotoUrl = await _fileManagerService.UploadProfilePhoto(user.ProfilePhoto);
+            } catch (Exception e) { throw (e); }
+
             await _userRepository.ReplaceOneAsync(user);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using GuideMe.Models;
+using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
@@ -20,5 +21,8 @@ namespace GuideMe.Models.Account
         public List<Review> Reviews { get; set; }
         public string ProfilePhotoUrl { get; set; }
         public List<string> Roles { get; set; }
+
+        [BsonIgnore]
+        public IFormFile ProfilePhoto { get; set; }
     }
 }

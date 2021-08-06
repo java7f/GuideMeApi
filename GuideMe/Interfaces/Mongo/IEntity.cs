@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
 using System;
 
 namespace GuideMe.Interfaces.Mongo
@@ -7,9 +8,7 @@ namespace GuideMe.Interfaces.Mongo
     public interface IEntity
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         string Id { get; set; }
-
         DateTime CreatedOn { get; }
     }
 }

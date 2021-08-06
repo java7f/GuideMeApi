@@ -1,4 +1,6 @@
 ﻿using GuideMe.Models.Account;
+using Microsoft.AspNetCore.Http;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +17,7 @@ namespace GuideMe.Models.Experiences
         public decimal ExperiencePrice { get; set; }
         public double GuideLatitude { get; set; }
         public double GuideLongitude { get; set; }
-        public double GuidePhotoUrl { get; set; }
+        public string GuidePhotoUrl { get; set; }
         public List<string> ExperienceTags { get; set; }
         public List<Review> GuideReviews { get; set; }
     }
