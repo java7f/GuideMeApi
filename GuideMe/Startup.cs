@@ -21,6 +21,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Azure;
+using Azure.Storage.Queues;
+using Azure.Core.Extensions;
 
 namespace GuideMe
 {
@@ -62,9 +65,9 @@ namespace GuideMe
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddScoped(_ => {
-                return new BlobServiceClient(Configuration.GetSection(nameof(BlobStoreSettings))["ConnectionString"]);
-            });
+            //services.AddScoped(_ => {
+            //    return new BlobServiceClient(Configuration.GetSection(nameof(BlobStoreSettings))["ConnectionString"]);
+            //});
 
             //Add all the services 
             RegisterServices(services);
@@ -74,6 +77,11 @@ namespace GuideMe
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GuideMe", Version = "v1" });
+            });
+            services.AddAzureClients(builder =>
+            {
+                builder.AddBlobServiceClient(Configuration["BlobStoreSettings:ConnectionString:blob"], preferMsi: true);
+                builder.AddQueueServiceClient(Configuration["BlobStoreSettings:ConnectionString:queue"], preferMsi: true);
             });
 
         }
@@ -105,6 +113,31 @@ namespace GuideMe
             services.AddScoped<GuideExperienceService>();
             services.AddScoped<GuideExperienceViewDataService>();
             services.AddScoped<FileManagerService>();
+        }
+    }
+    internal static class StartupExtensions
+    {
+        public static IAzureClientBuilder<BlobServiceClient, BlobClientOptions> AddBlobServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
+        {
+            if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
+            {
+                return builder.AddBlobServiceClient(serviceUri);
+            }
+            else
+            {
+                return builder.AddBlobServiceClient(serviceUriOrConnectionString);
+            }
+        }
+        public static IAzureClientBuilder<QueueServiceClient, QueueClientOptions> AddQueueServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
+        {
+            if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
+            {
+                return builder.AddQueueServiceClient(serviceUri);
+            }
+            else
+            {
+                return builder.AddQueueServiceClient(serviceUriOrConnectionString);
+            }
         }
     }
 }

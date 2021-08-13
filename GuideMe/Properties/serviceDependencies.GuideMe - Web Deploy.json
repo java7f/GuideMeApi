@@ -3,6 +3,12 @@
     "apis1": {
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/GuideMeapi/apis/GuideMe",
       "type": "apis.azure"
+    },
+    "storage1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/cs21003000097471a25",
+      "type": "storage.azure",
+      "connectionId": "BlobStoreSettings:ConnectionString",
+      "secretStore": "AzureAppSettings"
     }
   }
 }

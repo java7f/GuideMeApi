@@ -2,9 +2,9 @@
 {
     public class Review
     {
-        string UserId { get; set; }
-        string UserName { get; set; }
-        string RatingComment { get; set; }
-        float RatingValue { get; set; }
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string RatingComment { get; set; }
+        public float RatingValue { get; set; }
     }
 }

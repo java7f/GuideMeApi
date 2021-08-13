@@ -11,9 +11,8 @@ namespace GuideMe.Models.Experiences
         public string GuideFirstName { get; set; }
         public string GuideLastName { get; set; }
         public float GuideRating { get; set; }
-        public double GuideLatitude { get; set; }
-        public double GuideLongitude { get; set; }
-        public double GuidePhotoUrl { get; set; }
+        public Address GuideAddress { get; set; }
+        public string GuidePhotoUrl { get; set; }
         public List<string> ExperienceTags { get; set; }
     }
 }
