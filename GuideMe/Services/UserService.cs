@@ -22,6 +22,11 @@ namespace GuideMe.Services
         {
             return _userRepository.FindById(userId);
         }
+        
+        public User GetByEmail(string userEmail)
+        {
+            return _userRepository.FindOne(user => user.Email == userEmail);
+        }
 
         public IEnumerable<User> GetUsers()
         {

@@ -29,6 +29,15 @@ namespace GuideMe.Controllers.UserManagement
             else return NotFound();
         }
         
+        [HttpGet("getByEmail/{email}")]
+        public IActionResult GetByEmail(string email)
+        {
+            var user = _userService.GetByEmail(email);
+
+            if (user != null) return Ok(user);
+            else return NotFound();
+        }
+        
         [HttpGet]
         public IActionResult GetAll()
         {
