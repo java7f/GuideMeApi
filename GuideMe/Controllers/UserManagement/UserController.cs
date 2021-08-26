@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GuideMe.Models.Account;
+using Microsoft.AspNetCore.Http;
 
 namespace GuideMe.Controllers.UserManagement
 {
@@ -54,6 +55,20 @@ namespace GuideMe.Controllers.UserManagement
             {
                 await _userService.Insert(user);
                 return Ok();
+            } 
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
+        [HttpPost("uploadFile/{email}")]
+        public async Task<IActionResult> InsertProfilePicture(string email, [FromForm] IFormFile profile_photo)
+        {
+            try
+            {
+                var url = await _userService.InsertProfilePhoto(email, profile_photo);
+                return Ok(url);
             } 
             catch (Exception e)
             {

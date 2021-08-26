@@ -21,8 +21,5 @@ namespace GuideMe.Models.Account
         public List<Review> Reviews { get; set; }
         public string ProfilePhotoUrl { get; set; }
         public List<string> Roles { get; set; }
-
-        [BsonIgnore]
-        public IFormFile ProfilePhoto { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GuideMe.Interfaces.Mongo;
 using GuideMe.Models.Account;
+using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
@@ -35,26 +36,21 @@ namespace GuideMe.Services
 
         public async Task Insert(User user)
         {
-            try
-            {
-                if (user.ProfilePhoto != null)
-                    user.ProfilePhotoUrl = await _fileManagerService.UploadProfilePhoto(user.ProfilePhoto);
-                //if (string.IsNullOrEmpty(user.Id))
-                //    user.Id = ObjectId.GenerateNewId().ToString();
-            }
-            catch (Exception e) { throw (e); }
             await _userRepository.InsertOneAsync(user);
         }
 
         public async Task Update(User user)
         {
-            try
-            {
-                if (user.ProfilePhoto != null)
-                    user.ProfilePhotoUrl = await _fileManagerService.UploadProfilePhoto(user.ProfilePhoto);
-            } catch (Exception e) { throw (e); }
-
             await _userRepository.ReplaceOneAsync(user);
+        }
+
+        public async Task<String> InsertProfilePhoto(string email, IFormFile profile_photo)
+        {
+            var file_url = await _fileManagerService.UploadProfilePhoto(profile_photo);
+            var user = GetByEmail(email);
+            user.ProfilePhotoUrl = file_url;
+            await Update(user);
+            return file_url;
         }
     }
 }
