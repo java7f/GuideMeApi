@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GuideMe.Utils;
 
 namespace GuideMe.Models.Experiences
 {
@@ -12,5 +9,6 @@ namespace GuideMe.Models.Experiences
         public string City { get; set; }
         public string Country { get; set; }
         public string ZipCode { get; set; }
+        public Coordinate Coordinates { get; set; }
     }
 }

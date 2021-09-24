@@ -10,5 +10,7 @@ namespace GuideMe.Models.AzureBlob
     {
         public string ConnectionString { get; set; }
         public string ProfilePhotoContainer { get; set; }
+        public string AudiofilesContainer { get; set; }
+        public string LocationPhotosContainer { get; set; }
     }
 }

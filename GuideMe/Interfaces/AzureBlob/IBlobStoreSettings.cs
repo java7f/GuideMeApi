@@ -9,5 +9,7 @@ namespace GuideMe.Interfaces.AzureBlob
     {
         string ConnectionString { get; set; }
         string ProfilePhotoContainer { get; set; }
+        string AudiofilesContainer { get; set; }
+        string LocationPhotosContainer { get; set; }
     }
 }
