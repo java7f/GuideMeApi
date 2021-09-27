@@ -110,6 +110,7 @@ namespace GuideMe
             services.AddScoped<GuideExperienceViewDataService>();
             services.AddScoped<FileManagerService>();
             services.AddScoped<ReservationsService>();
+            services.AddScoped<LocationsService>();
         }
     }
 }
