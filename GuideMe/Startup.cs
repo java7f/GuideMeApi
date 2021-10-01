@@ -41,7 +41,7 @@ namespace GuideMe
         {
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+                .AddJwtBearer("Mobile", options =>
                 {
                     options.Authority = "https://securetoken.google.com/guideme-6a15d";
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -50,6 +50,17 @@ namespace GuideMe
                         ValidIssuer = "https://securetoken.google.com/guideme-6a15d",
                         ValidateAudience = true,
                         ValidAudience = "guideme-6a15d",
+                        ValidateLifetime = true
+                    };
+                })
+                .AddJwtBearer("Web", options => {
+                    options.Authority = "https://securetoken.google.com/guidemeadmin";
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://securetoken.google.com/guidemeadmin",
+                        ValidateAudience = true,
+                        ValidAudience = "guidemeadmin",
                         ValidateLifetime = true
                     };
                 });
@@ -64,6 +75,8 @@ namespace GuideMe
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddCors();
 
             services.AddScoped(_ =>
             {
@@ -85,6 +98,11 @@ namespace GuideMe
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(builder =>
+                builder.WithOrigins("http://localhost:4200")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+            );
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GuideMe v1"));

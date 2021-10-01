@@ -3,6 +3,7 @@ using GuideMe.Interfaces.AzureBlob;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -93,6 +94,15 @@ namespace GuideMe.Services
         {
             var blobContainer = _blobServiceClient.GetBlobContainerClient(container);
             return await blobContainer.DeleteBlobIfExistsAsync(fileName);
+        }
+
+        public IFormFile ConvertBase64ToFormFile(string base64File,string name, string fileName)
+        {
+            byte[] bytes = Convert.FromBase64String(base64File);
+            MemoryStream stream = new MemoryStream(bytes);
+
+            IFormFile file = new FormFile(stream, 0, bytes.Length, name, fileName);
+            return file;
         }
     }
 }

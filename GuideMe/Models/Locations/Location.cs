@@ -12,5 +12,9 @@ namespace GuideMe.Models.Locations
         public Coordinate Coordinates { get; set; }
         [BsonIgnore]
         public IFormFile LocationPhotoFile { get; set; }
+        [BsonIgnore]
+        public string LocationPhotoFileBase64 { get; set; }
+        [BsonIgnore]
+        public string LocationPhotoFileName { get; set; }
     }
 }

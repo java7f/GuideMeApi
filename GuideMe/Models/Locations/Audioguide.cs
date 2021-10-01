@@ -13,5 +13,7 @@ namespace GuideMe.Models.Locations
         [BsonIgnore]
         public IFormFile Audiofile { get; set; }
         public string AudiofileName { get; set; }
+        [BsonIgnore]
+        public string AudiofileBase64 { get; set; }
     }
 }

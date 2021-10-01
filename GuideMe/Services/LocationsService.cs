@@ -32,16 +32,16 @@ namespace GuideMe.Services
             return _locationsRepository.FindById(locationId);
         }
         
-        public IEnumerable<Location> GetLocations(string email)
+        public IEnumerable<Location> GetLocations(string userId)
         {
-            var user = _userService.GetByEmail(email);
-            return _locationsRepository.AsQueryable().Where(location => location.UserId == user.Id).ToList();
+            return _locationsRepository.AsQueryable().Where(location => location.UserId == userId).ToList();
         }
         
         public async Task InsertLocation(Location location)
         {
             try
             {
+                location.LocationPhotoFile = _fileManagerService.ConvertBase64ToFormFile(location.LocationPhotoFileBase64, location.Name, location.LocationPhotoFileName);
                 var locationPhotoUrl = await _fileManagerService.UploadLocationPhoto(location.LocationPhotoFile);
                 if (!string.IsNullOrEmpty(locationPhotoUrl))
                 {
@@ -73,6 +73,7 @@ namespace GuideMe.Services
         {
             try
             {
+                audioguide.Audiofile = _fileManagerService.ConvertBase64ToFormFile(audioguide.AudiofileBase64, audioguide.Name, audioguide.AudiofileName);
                 var audiofileUrl = await _fileManagerService.UploadAudiofile(audioguide.Audiofile);
                 if(!string.IsNullOrEmpty(audiofileUrl))
                 {
