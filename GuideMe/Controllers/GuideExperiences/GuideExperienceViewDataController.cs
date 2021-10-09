@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace GuideMe.Controllers.GuideExperiences
 {
     [ApiController]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Mobile")]
     [Route(Util.Route)]
     public class GuideExperienceViewDataController : ControllerBase
     {

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace GuideMe.Controllers
 {
     [Route(Util.Route)]
-    [Authorize(AuthenticationSchemes = "Web")]
+    [Authorize(AuthenticationSchemes = "Web, Mobile")]
     [ApiController]
     public class LocationsController : ControllerBase
     {
@@ -37,6 +37,15 @@ namespace GuideMe.Controllers
         public IActionResult GetAllLocations(string userId)
         {
             var experiences = _locationsService.GetLocations(userId).ToList();
+
+            if (experiences != null) return Ok(experiences);
+            else return NotFound();
+        }
+        
+        [HttpGet("location/all")]
+        public IActionResult GetAllLocationsForMobile()
+        {
+            var experiences = _locationsService.GetLocations().ToList();
 
             if (experiences != null) return Ok(experiences);
             else return NotFound();

@@ -32,9 +32,12 @@ namespace GuideMe.Services
             return _locationsRepository.FindById(locationId);
         }
         
-        public IEnumerable<Location> GetLocations(string userId)
+        public IEnumerable<Location> GetLocations(string userId = "")
         {
-            return _locationsRepository.AsQueryable().Where(location => location.UserId == userId).ToList();
+            if (string.IsNullOrEmpty(userId))
+                return _locationsRepository.FindAll();
+            else
+                return _locationsRepository.AsQueryable().Where(location => location.UserId == userId).ToList();
         }
         
         public async Task InsertLocation(Location location)
