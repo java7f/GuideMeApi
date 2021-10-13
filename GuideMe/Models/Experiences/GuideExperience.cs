@@ -10,6 +10,7 @@ namespace GuideMe.Models.Experiences
 {
     public class GuideExperience : Entity
     {
+        public string GuideFirebaseId { get; set; }
         public string GuideFirstName { get; set; }
         public string GuideLastName { get; set; }
         public string ExperienceDescription { get; set; }
