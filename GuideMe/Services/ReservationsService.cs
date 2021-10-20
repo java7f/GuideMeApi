@@ -85,12 +85,12 @@ namespace GuideMe.Services
                 .Where(reservation => reservation.GuideUserId == guideId && reservation.ReservationStatus == ReservationStatus.PENDING).ToList();
         }
 
-        public async Task InsertReservation(ExperienceReservationRequest experienceReservationRequest)
+        public async Task InsertReservationRequest(ExperienceReservationRequest experienceReservationRequest)
         {
             await _experienceReservationRequestRepository.InsertOneAsync(experienceReservationRequest);
         }
 
-        public async Task UpdateReservation(ExperienceReservationRequest experienceReservationRequest)
+        public async Task UpdateReservationRequest(ExperienceReservationRequest experienceReservationRequest)
         {
             await _experienceReservationRequestRepository.ReplaceOneAsync(experienceReservationRequest);
         }

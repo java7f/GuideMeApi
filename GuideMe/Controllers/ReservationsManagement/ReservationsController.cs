@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace GuideMe.Controllers.ReservationsManagement
 {
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [Route(Util.Route)]
     public class ReservationsController : ControllerBase
     {
@@ -57,6 +57,24 @@ namespace GuideMe.Controllers.ReservationsManagement
                 return Ok();
             }
             catch(Exception e) { return BadRequest(e.Message); }
-        } 
+        }
+
+        #region Reservation Requests
+
+        [HttpPost("insertReservationRequest")]
+        public async Task<IActionResult> InsertReservationRequest([FromBody] ExperienceReservationRequest experienceReservationRequest)
+        {
+            if (experienceReservationRequest == null)
+                return BadRequest();
+
+            try
+            {
+                await _reservationsService.InsertReservationRequest(experienceReservationRequest);
+                return Ok();
+            }
+            catch (Exception e) { return BadRequest(e.Message); }
+        }
+
+        #endregion
     }
 }
