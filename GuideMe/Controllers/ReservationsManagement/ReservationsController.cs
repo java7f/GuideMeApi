@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace GuideMe.Controllers.ReservationsManagement
 {
     [ApiController]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Mobile")]
     [Route(Util.Route)]
     public class ReservationsController : ControllerBase
     {
