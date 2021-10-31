@@ -23,6 +23,7 @@ namespace GuideMe.Models.Account
         public List<Review> Reviews { get; set; }
         public string ProfilePhotoUrl { get; set; }
         public List<string> Roles { get; set; }
+        public List<string> Wishlist { get; set; } = new List<string>();
         public Address Address { get; set; }
     }
 }

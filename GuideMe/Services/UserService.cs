@@ -21,7 +21,8 @@ namespace GuideMe.Services
 
         public User Get(string userId)
         {
-            return _userRepository.FindOne(user => user.FirebaseUserId == userId);
+            User user = _userRepository.FindOne(user => user.FirebaseUserId == userId);
+            return user;
         }
         
         [Obsolete]
