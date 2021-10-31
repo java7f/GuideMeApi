@@ -1,4 +1,5 @@
-﻿using GuideMe.Utils;
+﻿using GuideMe.Models.Experiences;
+using GuideMe.Utils;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -9,7 +10,7 @@ namespace GuideMe.Models.Locations
         public string Name { get; set; }
         public string UserId { get; set; }
         public string LocationPhotoUrl { get; set; }
-        public Coordinate Coordinates { get; set; }
+        public Address Address { get; set; }
         [BsonIgnore]
         public IFormFile LocationPhotoFile { get; set; }
         [BsonIgnore]
