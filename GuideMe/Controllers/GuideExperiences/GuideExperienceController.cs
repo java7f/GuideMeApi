@@ -31,6 +31,15 @@ namespace GuideMe.Controllers.GuideExperiences
             else return NotFound();
         }
 
+        [HttpGet("getUserById/{userId}")]
+        public IActionResult GetByUserId(string userId)
+        {
+            List<GuideExperience> experiences = _guideExperienceService.GetByUserId(userId);
+
+            if (experiences != null) return Ok(experiences);
+            else return NotFound();
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
