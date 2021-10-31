@@ -1,4 +1,5 @@
 ﻿using GuideMe.Models;
+using GuideMe.Models.Experiences;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -22,5 +23,6 @@ namespace GuideMe.Models.Account
         public List<Review> Reviews { get; set; }
         public string ProfilePhotoUrl { get; set; }
         public List<string> Roles { get; set; }
+        public Address Address { get; set; }
     }
 }

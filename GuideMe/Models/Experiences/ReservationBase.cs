@@ -17,5 +17,6 @@ namespace GuideMe.Models.Experiences
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public decimal Price { get; set; }
+        public Address Address { get; set; }
     }
 }
