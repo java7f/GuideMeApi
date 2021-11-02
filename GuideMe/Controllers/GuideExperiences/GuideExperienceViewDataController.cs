@@ -31,6 +31,17 @@ namespace GuideMe.Controllers.GuideExperiences
             if (experiences != null) return Ok(experiences);
             else return NotFound();
         }
+        
+        [HttpGet("getAll/{location}")]
+        public IActionResult GetAll(string location)
+        {
+            location = location.ToLower();
+            var experiences = _guideExperienceViewDataService.GetExperiences()
+                .Where(experience => experience.GuideAddress.City.ToLower().Contains(location) || experience.GuideAddress.Country.ToLower().Contains(location)).ToList();
+
+            if (experiences != null) return Ok(experiences);
+            else return NotFound();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] GuideExperienceViewData experience)

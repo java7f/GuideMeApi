@@ -51,6 +51,17 @@ namespace GuideMe.Controllers
             else return NotFound();
         }
 
+        [HttpGet("location/search/{location}")]
+        public IActionResult GetSearch(string location)
+        {
+            location = location.ToLower();
+            var locations = _locationsService.GetLocations()
+                .Where(locationInfo => locationInfo.Address.City.ToLower().Contains(location) || locationInfo.Address.Country.ToLower().Contains(location)).ToList();
+
+            if (locations != null) return Ok(locations);
+            else return NotFound();
+        }
+
         [HttpPost("location")]
         public async Task<IActionResult> InsertLocation([FromBody] Location location)
         {
