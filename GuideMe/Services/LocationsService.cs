@@ -112,6 +112,17 @@ namespace GuideMe.Services
             }
             catch (Exception e) { throw; }
         }
+
+        public async Task UpdateAudioguide(Audioguide audioguide)
+        {
+            await _audioguidesRepository.ReplaceOneAsync(audioguide);
+        }
+
+        public Audioguide GetAudioguide(string audioguideId)
+        {
+            return _audioguidesRepository.FindById(audioguideId);
+        }
+
         #endregion
     }
 }

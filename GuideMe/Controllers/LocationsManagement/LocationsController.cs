@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace GuideMe.Controllers
 {
     [Route(Util.Route)]
-    [Authorize(AuthenticationSchemes = "Web, Mobile")]
+    //[Authorize(AuthenticationSchemes = "Web, Mobile")]
     [ApiController]
     public class LocationsController : ControllerBase
     {
@@ -141,6 +141,29 @@ namespace GuideMe.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpPut("audioguide")]
+        public async Task<IActionResult> UpdateAudioguide([FromBody] Audioguide audioguide)
+        {
+            try
+            {
+                await _locationsService.UpdateAudioguide(audioguide);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("audioguide/getAudioguide/{audioguideId}")]
+        public IActionResult GetAudioguide(string audioguideId)
+        {
+            var audioguide = _locationsService.GetAudioguide(audioguideId);
+
+            if (audioguide != null) return Ok(audioguide);
+            else return NotFound();
         }
         #endregion
     }

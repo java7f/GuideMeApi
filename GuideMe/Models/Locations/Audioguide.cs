@@ -15,5 +15,7 @@ namespace GuideMe.Models.Locations
         public string AudiofileName { get; set; }
         [BsonIgnore]
         public string AudiofileBase64 { get; set; }
+        public string MacAddress { get; set; }
+        public string Language { get; set; }
     }
 }
