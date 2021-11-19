@@ -122,6 +122,11 @@ namespace GuideMe.Services
         {
             return _audioguidesRepository.FindById(audioguideId);
         }
+        
+        public List<Audioguide> GetProximityAudioguides(List<string> beaconIds)
+        {
+            return _audioguidesRepository.FindAll().Where(audio => beaconIds.Contains(audio.MacAddress)).ToList();
+        }
 
         #endregion
     }
