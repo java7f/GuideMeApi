@@ -129,6 +129,7 @@ namespace GuideMe
             services.AddScoped<FileManagerService>();
             services.AddScoped<ReservationsService>();
             services.AddScoped<LocationsService>();
+            services.AddScoped<TouristAlertService>();
         }
     }
 }

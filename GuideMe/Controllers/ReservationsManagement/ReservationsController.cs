@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace GuideMe.Controllers.ReservationsManagement
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Mobile")]
+    //[Authorize(AuthenticationSchemes = "Mobile")]
     [Route(Util.Route)]
     public class ReservationsController : ControllerBase
     {
@@ -44,6 +44,19 @@ namespace GuideMe.Controllers.ReservationsManagement
 
             return Ok(pastExperiences);
         } 
+
+        [HttpGet("getGuideReservations/{guideId}")]
+        public async Task<IActionResult> GetGuideReservations(string guideId)
+        {
+            try
+            {
+                var guideReservations = _reservationsService.GetGuideReservations(guideId);
+                return Ok(guideReservations);
+            } catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
         
         [HttpPost("insertReservation")]
         public async Task<IActionResult> InsertReservation([FromBody] ExperienceReservation experienceReservation)

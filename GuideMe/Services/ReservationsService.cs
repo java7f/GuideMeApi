@@ -42,6 +42,11 @@ namespace GuideMe.Services
                 .Where(reservation => reservation.GuideUserId == guideId && reservation.ToDate < DateTime.Now).ToList();
         }
 
+        public List<ExperienceReservation> GetGuideReservations(string guideId)
+        {
+            return _experienceReservationRepository.AsQueryable().Where(reservation => reservation.GuideUserId == guideId).ToList();
+        }
+
         public async Task InsertReservation(ExperienceReservation experienceReservation)
         {
             await _experienceReservationRepository.InsertOneAsync(experienceReservation);
