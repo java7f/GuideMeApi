@@ -166,10 +166,10 @@ namespace GuideMe.Controllers
             else return NotFound();
         }
 
-        [HttpPost("audioguide/getProximityAudioguides")]
-        public IActionResult GetProximityAudioguides([FromBody] List<string> beaconIds)
+        [HttpPost("audioguide/getProximityAudioguides/{locationId}")]
+        public IActionResult GetProximityAudioguides(string locationId, [FromBody] List<string> beaconIds)
         {
-            var audioguides = _locationsService.GetProximityAudioguides(beaconIds);
+            var audioguides = _locationsService.GetProximityAudioguides(locationId, beaconIds);
 
             if (audioguides != null) return Ok(audioguides);
             else return NotFound();
