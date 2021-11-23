@@ -76,5 +76,28 @@ namespace GuideMe.Services
             }
             
         }
+
+        public async Task AddReviewToExperience(string guideExperienceId, Review review)
+        {
+            try
+            {
+                var experience = _guideExperienceRepository.FindById(guideExperienceId);
+                experience.GuideReviews.Add(review);
+                await _guideExperienceRepository.ReplaceOneAsync(experience);
+                float totalRating = 0.0f;
+                foreach(var rev in experience.GuideReviews)
+                {
+                    totalRating += rev.RatingValue;
+                }
+                totalRating = totalRating / experience.GuideReviews.Count;
+                await _guideExperienceViewDataService.UpdateRating(guideExperienceId, totalRating);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+        }
     }
 }

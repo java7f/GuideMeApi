@@ -24,6 +24,7 @@ namespace GuideMe.Models.Account
         public string ProfilePhotoUrl { get; set; }
         public List<string> Roles { get; set; }
         public List<string> Wishlist { get; set; } = new List<string>();
+        public List<string> Languages { get; set; } = new List<string>();
         public Address Address { get; set; }
     }
 }
