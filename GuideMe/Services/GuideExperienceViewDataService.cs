@@ -34,5 +34,12 @@ namespace GuideMe.Services
         {
             await _guideExperienceViewDataRepository.ReplaceOneAsync(experience);
         }
+
+        public async Task UpdateRating(string experienceId, float newRating)
+        {
+            var experience = Get(experienceId);
+            experience.GuideRating = newRating;
+            await Update(experience);
+        }
     }
 }

@@ -16,9 +16,11 @@ namespace GuideMe.Controllers.ReservationsManagement
     public class ReservationsController : ControllerBase
     {
         private readonly ReservationsService _reservationsService;
-        public ReservationsController(ReservationsService reservationsService)
+        private readonly GuideExperienceService _experienceService;
+        public ReservationsController(ReservationsService reservationsService, GuideExperienceService experienceService)
         {
             _reservationsService = reservationsService;
+            _experienceService = experienceService;
         }
 
         [HttpGet]
@@ -85,6 +87,23 @@ namespace GuideMe.Controllers.ReservationsManagement
                 return Ok();
             }
             catch(Exception e) { return BadRequest(e.Message); }
+        }
+
+        [HttpPut("rateReservation")]
+        public async Task<IActionResult> RateReservation([FromBody] ExperienceReservation experienceReservation)
+        {
+            if (experienceReservation == null)
+                return BadRequest();
+
+            try
+            {
+                experienceReservation.ExperienceRating.UserId = experienceReservation.TouristUserId;
+                experienceReservation.ExperienceRating.UserName = $"{experienceReservation.TouristFirstName} {experienceReservation.TouristLastName}";
+                await _reservationsService.UpdateReservation(experienceReservation);
+                await _experienceService.AddReviewToExperience(experienceReservation.GuideExperienceId, experienceReservation.ExperienceRating);
+                return Ok();
+            }
+            catch (Exception e) { return BadRequest(e.Message); }
         }
 
         #region Reservation Requests
