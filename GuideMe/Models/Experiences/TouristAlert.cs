@@ -11,6 +11,7 @@ namespace GuideMe.Models.Experiences
         public string TouristPhotoUrl { get; set; }
         public string TouristCountry { get; set; }
         public string TouristDestination { get; set; }
+        public string AlertComment { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public List<string> TouristLanguages { get; set; }
