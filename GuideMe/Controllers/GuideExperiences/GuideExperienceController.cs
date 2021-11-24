@@ -34,7 +34,7 @@ namespace GuideMe.Controllers.GuideExperiences
         [HttpGet("getUserById/{userId}")]
         public IActionResult GetByUserId(string userId)
         {
-            List<GuideExperience> experiences = _guideExperienceService.GetByUserId(userId);
+            List<GuideExperience> experiences = _guideExperienceService.GetByUserFirebaseId(userId);
 
             if (experiences != null) return Ok(experiences);
             else return NotFound();

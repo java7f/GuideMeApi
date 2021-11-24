@@ -36,7 +36,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('GuideMe', subscription().subscriptionId)))]",
+      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('guide-me', subscription().subscriptionId)))]",
       "resourceGroup": "[parameters('resourceGroupName')]",
       "apiVersion": "2019-10-01",
       "dependsOn": [
@@ -82,6 +82,7 @@
                 },
                 "virtualNetworkType": "None",
                 "certificates": null,
+                "enableClientCertificate": false,
                 "apiVersionConstraint": {
                   "minApiVersion": null
                 }
@@ -94,14 +95,14 @@
             },
             {
               "type": "Microsoft.ApiManagement/service/apis",
-              "name": "GuideMeapi/GuideMe",
+              "name": "GuideMeapi/guide-me",
               "properties": {
                 "displayName": "GuideMe",
                 "apiRevision": "1",
                 "description": null,
                 "subscriptionRequired": true,
-                "serviceUrl": null,
-                "path": "",
+                "serviceUrl": "https://guideme.azurewebsites.net",
+                "path": "v1",
                 "protocols": [
                   "https"
                 ],

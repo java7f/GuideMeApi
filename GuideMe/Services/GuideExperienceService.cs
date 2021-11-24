@@ -31,10 +31,10 @@ namespace GuideMe.Services
             return _guideExperienceRepository.FindById(experienceId);
         }
 
-        public List<GuideExperience> GetByUserId(string userId)
+        public List<GuideExperience> GetByUserFirebaseId(string userId)
         {
             List<GuideExperience> expList = new List<GuideExperience>();
-            User user = _userService.Get(userId);
+            User user = _userService.GetByFirebaseId(userId);
             foreach(var ex in user.Wishlist)
             {
                 var exp = Get(ex);

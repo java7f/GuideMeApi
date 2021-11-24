@@ -19,9 +19,15 @@ namespace GuideMe.Services
             _fileManagerService = fileManagerService;
         }
 
-        public User Get(string userId)
+        public User GetByFirebaseId(string firebaseId)
         {
-            User user = _userRepository.FindOne(user => user.FirebaseUserId == userId);
+            User user = _userRepository.FindOne(user => user.FirebaseUserId == firebaseId);
+            return user;
+        }
+
+        public User GetById(string userId)
+        {
+            User user = _userRepository.FindById(userId);
             return user;
         }
         

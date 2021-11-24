@@ -24,9 +24,9 @@ namespace GuideMe.Services
         }
 
         #region Experience Reservations
-        public async Task<ExperienceReservation> GetReservation(string id)
+        public ExperienceReservation GetReservation(string id)
         {
-            return await _experienceReservationRepository.FindByIdAsync(id);
+            return _experienceReservationRepository.FindById(id);
         }
 
         public List<ExperienceReservation> GetPastReservationsForTourist(string email)

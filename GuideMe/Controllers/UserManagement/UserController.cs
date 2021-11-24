@@ -24,8 +24,16 @@ namespace GuideMe.Controllers.UserManagement
         [HttpGet("{userId}")]
         public IActionResult Get(string userId)
         {
-            var user = _userService.Get(userId);
+            var user = _userService.GetByFirebaseId(userId);
 
+            if (user != null) return Ok(user);
+            else return NotFound();
+        }
+
+        [HttpGet("getById/{userId}")]
+        public IActionResult GetById(string userId)
+        {
+            var user = _userService.GetById(userId);
             if (user != null) return Ok(user);
             else return NotFound();
         }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace GuideMe.Controllers.ReservationsManagement
 {
     [ApiController]
-    //[Authorize(AuthenticationSchemes = "Mobile")]
+    [Authorize(AuthenticationSchemes = "Mobile")]
     [Route(Util.Route)]
     public class ReservationsController : ControllerBase
     {
@@ -22,7 +22,7 @@ namespace GuideMe.Controllers.ReservationsManagement
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetReservationRequestsForTourist(string touristId)
+        public IActionResult GetReservationRequestsForTourist(string touristId)
         {
             if (string.IsNullOrEmpty(touristId))
                 return BadRequest();
@@ -34,7 +34,7 @@ namespace GuideMe.Controllers.ReservationsManagement
         }
 
         [HttpGet("getPastReservationsTourist/{email}")]
-        public async Task<IActionResult> GetPastReservationsForTourist(string email)
+        public IActionResult GetPastReservationsForTourist(string email)
         {
             if (string.IsNullOrEmpty(email))
                 return BadRequest();
@@ -43,21 +43,36 @@ namespace GuideMe.Controllers.ReservationsManagement
 
 
             return Ok(pastExperiences);
-        } 
+        }
 
         [HttpGet("getGuideReservations/{guideId}")]
-        public async Task<IActionResult> GetGuideReservations(string guideId)
+        public IActionResult GetGuideReservations(string guideId)
         {
             try
             {
                 var guideReservations = _reservationsService.GetGuideReservations(guideId);
                 return Ok(guideReservations);
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
         }
-        
+
+        [HttpGet("getReservationById/{id}")]
+        public IActionResult GetReservation(string id)
+        {
+            try
+            {
+                var reservation = _reservationsService.GetReservation(id);
+                return Ok(reservation);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost("insertReservation")]
         public async Task<IActionResult> InsertReservation([FromBody] ExperienceReservation experienceReservation)
         {
