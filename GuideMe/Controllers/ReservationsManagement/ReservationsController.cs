@@ -23,18 +23,6 @@ namespace GuideMe.Controllers.ReservationsManagement
             _experienceService = experienceService;
         }
 
-        [HttpGet]
-        public IActionResult GetReservationRequestsForTourist(string touristId)
-        {
-            if (string.IsNullOrEmpty(touristId))
-                return BadRequest();
-
-            var openRequests = _reservationsService.GetOpenReservationRequestsForTourist(touristId);
-
-
-            return Ok(openRequests);
-        }
-
         [HttpGet("getPastReservationsTourist/{email}")]
         public IActionResult GetPastReservationsForTourist(string email)
         {
@@ -42,6 +30,18 @@ namespace GuideMe.Controllers.ReservationsManagement
                 return BadRequest();
 
             var pastExperiences = _reservationsService.GetPastReservationsForTourist(email);
+
+
+            return Ok(pastExperiences);
+        }
+        
+        [HttpGet("getPastReservationsGuide/{userId}")]
+        public IActionResult GetPastReservationsForGuide(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+                return BadRequest();
+
+            var pastExperiences = _reservationsService.GetPastReservationsForGuide(userId);
 
 
             return Ok(pastExperiences);
@@ -108,6 +108,30 @@ namespace GuideMe.Controllers.ReservationsManagement
 
         #region Reservation Requests
 
+        [HttpGet("requestForTourist")]
+        public IActionResult GetReservationRequestsForTourist(string touristId)
+        {
+            if (string.IsNullOrEmpty(touristId))
+                return BadRequest();
+
+            var openRequests = _reservationsService.GetOpenReservationRequestsForTourist(touristId);
+
+
+            return Ok(openRequests);
+        }
+        
+        [HttpGet("requestForGuide/{guideId}")]
+        public IActionResult GetReservationRequestsForGuide(string guideId)
+        {
+            if (string.IsNullOrEmpty(guideId))
+                return BadRequest();
+
+            var openRequests = _reservationsService.GetOpenReservationRequestsForGuide(guideId);
+
+
+            return Ok(openRequests);
+        }
+
         [HttpPost("insertReservationRequest")]
         public async Task<IActionResult> InsertReservationRequest([FromBody] ExperienceReservationRequest experienceReservationRequest)
         {
@@ -120,6 +144,48 @@ namespace GuideMe.Controllers.ReservationsManagement
                 return Ok();
             }
             catch (Exception e) { return BadRequest(e.Message); }
+        }
+
+        [HttpGet("accept/{requestReservationId}")]
+        public async Task<IActionResult> AcceptReservationRequest(string requestReservationId)
+        {
+            try
+            {
+                await _reservationsService.AcceptReservationRequest(requestReservationId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("reject/{requestReservationId}")]
+        public async Task<IActionResult> RejectReservationRequest(string requestReservationId)
+        {
+            try
+            {
+                await _reservationsService.RejectReservationRequest(requestReservationId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
+        [HttpDelete("cancel/{requestReservationId}")]
+        public async Task<IActionResult> CancelReservationRequest(string requestReservationId)
+        {
+            try
+            {
+                await _reservationsService.DeleteReservationRequest(requestReservationId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         #endregion

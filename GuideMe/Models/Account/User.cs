@@ -20,11 +20,11 @@ namespace GuideMe.Models.Account
         public string Country { get; set; }
         public string Phone { get; set; }
         public string AboutUser { get; set; }
-        public List<Review> Reviews { get; set; }
+        public List<Review> Reviews { get; set; } = new List<Review>();
         public string ProfilePhotoUrl { get; set; }
         public List<string> Roles { get; set; }
         public List<string> Wishlist { get; set; } = new List<string>();
         public List<string> Languages { get; set; } = new List<string>();
-        public Address Address { get; set; }
+        public Address Address { get; set; } = new Address();
     }
 }

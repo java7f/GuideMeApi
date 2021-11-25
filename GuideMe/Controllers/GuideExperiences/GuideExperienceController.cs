@@ -39,6 +39,15 @@ namespace GuideMe.Controllers.GuideExperiences
             if (experiences != null) return Ok(experiences);
             else return NotFound();
         }
+        
+        [HttpGet("getGuideExperience/{guideId}")]
+        public IActionResult GetGuideExperience(string guideId)
+        {
+            GuideExperience experiences = _guideExperienceService.GetExperienceByGuideId(guideId);
+
+            if (experiences != null) return Ok(experiences);
+            else return Ok(new GuideExperience() { Id = ""});
+        }
 
         [HttpGet]
         public IActionResult GetAll()

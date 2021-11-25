@@ -18,7 +18,7 @@ namespace GuideMe.Models.Experiences
         public decimal ExperiencePrice { get; set; }
         public Address GuideAddress { get; set; }
         public string GuidePhotoUrl { get; set; }
-        public List<string> ExperienceTags { get; set; }
-        public List<Review> GuideReviews { get; set; }
+        public List<string> ExperienceTags { get; set; } = new List<string>();
+        public List<Review> GuideReviews { get; set; } = new List<Review>();
     }
 }

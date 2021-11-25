@@ -20,6 +20,14 @@ namespace GuideMe.Services
             return _guideExperienceViewDataRepository.FindById(experienceId);
         }
 
+        public IEnumerable<GuideExperienceViewData> GetExperiences(string location, string currentTouristId)
+        {
+            return _guideExperienceViewDataRepository.FindAll()
+                .Where(experience => (experience.GuideAddress != null) && experience.GuideFirebaseId != currentTouristId
+                && (experience.GuideAddress.City.ToLower().Contains(location) || 
+                experience.GuideAddress.Country.ToLower().Contains(location)));
+        }
+        
         public IEnumerable<GuideExperienceViewData> GetExperiences()
         {
             return _guideExperienceViewDataRepository.FindAll();

@@ -30,6 +30,10 @@ namespace GuideMe.Services
         {
             return _guideExperienceRepository.FindById(experienceId);
         }
+        public GuideExperience GetExperienceByGuideId(string guideId)
+        {
+            return _guideExperienceRepository.FindOne(exp => exp.GuideFirebaseId == guideId);
+        }
 
         public List<GuideExperience> GetByUserFirebaseId(string userId)
         {
@@ -38,7 +42,8 @@ namespace GuideMe.Services
             foreach(var ex in user.Wishlist)
             {
                 var exp = Get(ex);
-                expList.Add(exp);
+                if(exp != null)
+                    expList.Add(exp);
             }
             return expList;
         }
@@ -52,6 +57,11 @@ namespace GuideMe.Services
         {
             try
             {
+                var guideUser = _userService.GetByFirebaseId(experience.GuideFirebaseId);
+                experience.GuideFirstName = guideUser.FirstName;
+                experience.GuideLastName = guideUser.LastName;
+                experience.GuidePhotoUrl = guideUser.ProfilePhotoUrl;
+                experience.GuideAddress = guideUser.Address;
                 await _guideExperienceRepository.InsertOneAsync(experience);
                 var experienceViewData = _mapper.Map<GuideExperienceViewData>(experience);
                 await _guideExperienceViewDataService.Insert(experienceViewData);
@@ -65,6 +75,8 @@ namespace GuideMe.Services
         {
             try
             {
+                var guideUser = _userService.GetByFirebaseId(experience.GuideFirebaseId);
+                experience.GuideAddress = guideUser.Address;
                 await _guideExperienceRepository.ReplaceOneAsync(experience);
                 var experienceViewData = _mapper.Map<GuideExperienceViewData>(experience);
                 await _guideExperienceViewDataService.Update(experienceViewData);

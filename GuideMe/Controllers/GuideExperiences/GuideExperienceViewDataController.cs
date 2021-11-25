@@ -32,12 +32,11 @@ namespace GuideMe.Controllers.GuideExperiences
             else return NotFound();
         }
         
-        [HttpGet("getAll/{location}")]
-        public IActionResult GetAll(string location)
+        [HttpGet("getAll/{location}/{currentTouristId}")]
+        public IActionResult GetAll(string location, string currentTouristId)
         {
             location = location.ToLower();
-            var experiences = _guideExperienceViewDataService.GetExperiences()
-                .Where(experience => experience.GuideAddress.City.ToLower().Contains(location) || experience.GuideAddress.Country.ToLower().Contains(location)).ToList();
+            var experiences = _guideExperienceViewDataService.GetExperiences(location, currentTouristId).ToList();
 
             if (experiences != null) return Ok(experiences);
             else return NotFound();

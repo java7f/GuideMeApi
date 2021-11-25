@@ -8,6 +8,8 @@ namespace GuideMe.Models.Experiences
     public class TouristAlert : Entity
     {
         public string TouristFirstName { get; set; }
+        public string TouristLastName { get; set; }
+        public string TouristId { get; set; }
         public string TouristPhotoUrl { get; set; }
         public string TouristCountry { get; set; }
         public string TouristDestination { get; set; }

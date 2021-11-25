@@ -44,7 +44,12 @@ namespace GuideMe.Services
 
         public List<ExperienceReservation> GetGuideReservations(string guideId)
         {
-            return _experienceReservationRepository.AsQueryable().Where(reservation => reservation.GuideUserId == guideId).ToList();
+            return _experienceReservationRepository.AsQueryable().Where(reservation => reservation.GuideUserId == guideId && reservation.ToDate > DateTime.Now).ToList();
+        }
+        
+        public List<ExperienceReservation> GetTouristReservations(string touristId)
+        {
+            return _experienceReservationRepository.AsQueryable().Where(reservation => reservation.TouristUserId == touristId && reservation.ToDate > DateTime.Now).ToList();
         }
 
         public async Task InsertReservation(ExperienceReservation experienceReservation)
@@ -81,13 +86,43 @@ namespace GuideMe.Services
         public List<ExperienceReservationRequest> GetOpenReservationRequestsForTourist(string touristId)
         {
             return _experienceReservationRequestRepository.AsQueryable()
-                .Where(reservation => reservation.TouristUserId == touristId && reservation.ReservationStatus == ReservationStatus.PENDING).ToList();
+                .Where(reservation => reservation.TouristUserId == touristId).ToList();
         }
 
         public List<ExperienceReservationRequest> GetOpenReservationRequestsForGuide(string guideId)
         {
             return _experienceReservationRequestRepository.AsQueryable()
                 .Where(reservation => reservation.GuideUserId == guideId && reservation.ReservationStatus == ReservationStatus.PENDING).ToList();
+        }
+
+        public async Task AcceptReservationRequest(string reservationRequestId)
+        {
+            var offer = _experienceReservationRequestRepository.FindById(reservationRequestId);
+            offer.ReservationStatus = ReservationStatus.ACCEPTED;
+            _experienceReservationRequestRepository.ReplaceOne(offer);
+            var newReservation = new ExperienceReservation
+            {
+                TouristUserId = offer.TouristUserId,
+                GuideUserId = offer.GuideUserId,
+                GuideExperienceId = offer.GuideExperienceId,
+                FromDate = offer.FromDate,
+                ToDate = offer.ToDate,
+                Price = offer.Price,
+                Address = offer.Address,
+                TouristFirstName = offer.TouristFirstName,
+                TouristLastName = offer.TouristLastName,
+                GuideFirstName = offer.GuideFirstName,
+                GuideLastName = offer.GuideLastName,
+            };
+
+            await InsertReservation(newReservation);
+        }
+
+        public async Task RejectReservationRequest(string reservationRequestId)
+        {
+            var offer = _experienceReservationRequestRepository.FindById(reservationRequestId);
+            offer.ReservationStatus = ReservationStatus.REJECTED;
+            _experienceReservationRequestRepository.ReplaceOne(offer);
         }
 
         public async Task InsertReservationRequest(ExperienceReservationRequest experienceReservationRequest)
@@ -98,6 +133,11 @@ namespace GuideMe.Services
         public async Task UpdateReservationRequest(ExperienceReservationRequest experienceReservationRequest)
         {
             await _experienceReservationRequestRepository.ReplaceOneAsync(experienceReservationRequest);
+        }
+        
+        public async Task DeleteReservationRequest(string experienceReservationRequestId)
+        {
+            await _experienceReservationRequestRepository.DeleteByIdAsync(experienceReservationRequestId);
         }
         #endregion
     }
