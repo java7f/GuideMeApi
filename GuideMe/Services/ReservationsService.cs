@@ -44,12 +44,18 @@ namespace GuideMe.Services
 
         public List<ExperienceReservation> GetGuideReservations(string guideId)
         {
-            return _experienceReservationRepository.AsQueryable().Where(reservation => reservation.GuideUserId == guideId && reservation.ToDate > DateTime.Now).ToList();
+            return _experienceReservationRepository.AsQueryable()
+                .Where(reservation => reservation.GuideUserId == guideId && reservation.ToDate > DateTime.Now)
+                .OrderBy(r => r.FromDate)
+                .ToList();
         }
         
         public List<ExperienceReservation> GetTouristReservations(string touristId)
         {
-            return _experienceReservationRepository.AsQueryable().Where(reservation => reservation.TouristUserId == touristId && reservation.ToDate > DateTime.Now).ToList();
+            return _experienceReservationRepository.AsQueryable()
+                .Where(reservation => reservation.TouristUserId == touristId && reservation.ToDate > DateTime.Now)
+                .OrderBy(r => r.FromDate)
+                .ToList();
         }
 
         public async Task InsertReservation(ExperienceReservation experienceReservation)

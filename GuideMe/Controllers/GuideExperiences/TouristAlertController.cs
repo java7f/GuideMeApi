@@ -36,6 +36,20 @@ namespace GuideMe.Controllers.GuideExperiences
                 return BadRequest(e.Message);
             }
         }
+        
+        [HttpDelete("delete/{touristAlertId}")]
+        public async Task<IActionResult> DeleteTouristAlert(string touristAlertId)
+        {
+            try
+            {
+                await _touristAlertService.DeleteTouristAlert(touristAlertId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpGet("getAll/{location}/{currentUserId}")]
         public async Task<IActionResult> GetAll(string location, string currentUserId)

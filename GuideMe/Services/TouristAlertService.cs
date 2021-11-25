@@ -35,6 +35,10 @@ namespace GuideMe.Services
         
         public async Task InsertGuideOffer(GuidingOffer guidingOffer)
         {
+            var existingOffer = await _guidingOfferRepository.FindOneAsync(offer => offer.TouristAlertId == guidingOffer.TouristAlertId && offer.GuideId == guidingOffer.GuideId);
+            if (existingOffer != null)
+                throw new Exception("Ya existe una propuesta para esta alerta");
+
             var guideUser = _userService.GetByFirebaseId(guidingOffer.GuideId);
             var guideExperience = _guideExperienceService.GetExperienceByGuideId(guidingOffer.GuideId);
 
@@ -62,6 +66,7 @@ namespace GuideMe.Services
             var guideExperience = _guideExperienceService.Get(offer.GuideExperienceId);
             offer.ReservationStatus = ReservationStatus.ACCEPTED;
             _guidingOfferRepository.ReplaceOne(offer);
+
             var newReservation = new ExperienceReservation
             {
                 TouristUserId = offer.TouristId,
@@ -79,6 +84,8 @@ namespace GuideMe.Services
             };
 
             await _reservationsService.InsertReservation(newReservation);
+
+            await _touristAlertRepository.DeleteByIdAsync(offer.TouristAlertId);
         }
         
         public async Task RejectGuideOffer(string guideOfferId)
@@ -101,7 +108,19 @@ namespace GuideMe.Services
 
         public async Task DeleteTouristAlert(string alertId)
         {
+            var guideOffers = _guidingOfferRepository.FindAll().Where(offer => offer.TouristAlertId == alertId).ToList();
             await _touristAlertRepository.DeleteByIdAsync(alertId);
+
+            foreach(var offer in guideOffers)
+            {
+                await DeleteGuideOffer(offer.Id);
+            }
+        }
+        
+        public async Task DeleteGuideOffer(string offerId)
+        {
+            await _guidingOfferRepository.DeleteByIdAsync(offerId);
+
         }
     }
 }

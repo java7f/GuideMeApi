@@ -60,6 +60,20 @@ namespace GuideMe.Controllers.ReservationsManagement
                 return BadRequest(e.Message);
             }
         }
+        
+        [HttpGet("getTouristReservations/{touristId}")]
+        public IActionResult GetTouristReservations(string touristId)
+        {
+            try
+            {
+                var touristReservations = _reservationsService.GetTouristReservations(touristId);
+                return Ok(touristReservations);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpGet("getReservationById/{id}")]
         public IActionResult GetReservation(string id)
