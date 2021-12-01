@@ -47,12 +47,12 @@ namespace GuideMe.Controllers.ReservationsManagement
             return Ok(pastExperiences);
         }
 
-        [HttpGet("getGuideReservations/{guideId}")]
-        public IActionResult GetGuideReservations(string guideId)
+        [HttpGet("getGuideReservations/{guideFirebaseUserId}")]
+        public IActionResult GetGuideReservations(string guideFirebaseUserId)
         {
             try
             {
-                var guideReservations = _reservationsService.GetGuideReservations(guideId);
+                var guideReservations = _reservationsService.GetGuideReservations(guideFirebaseUserId);
                 return Ok(guideReservations);
             }
             catch (Exception e)
@@ -76,17 +76,14 @@ namespace GuideMe.Controllers.ReservationsManagement
         }
 
         [HttpGet("getReservationById/{id}")]
-        public IActionResult GetReservation(string id)
+        public async Task<IActionResult> GetReservation(string id)
         {
             try
             {
-                var reservation = _reservationsService.GetReservation(id);
+                var reservation = await _reservationsService.GetReservation(id);
                 return Ok(reservation);
             }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            catch (Exception e) { return BadRequest(e.Message); }
         }
 
         [HttpPost("insertReservation")]
