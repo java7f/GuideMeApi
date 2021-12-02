@@ -129,8 +129,8 @@ namespace GuideMe.Controllers.ReservationsManagement
             {
                 Review userRatingReview = new Review
                 {
-                    RatingComment = experienceReservation.ExperienceRating.RatingComment,
-                    RatingValue = experienceReservation.ExperienceRating.RatingValue,
+                    RatingComment = experienceReservation.RatingForTourist.RatingComment,
+                    RatingValue = experienceReservation.RatingForTourist.RatingValue,
                     UserId = experienceReservation.GuideUserId,
                     UserName = $"{experienceReservation.GuideFirstName} {experienceReservation.GuideLastName}"
                 };
