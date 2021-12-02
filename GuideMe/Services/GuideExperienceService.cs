@@ -122,14 +122,16 @@ namespace GuideMe.Services
         /// </summary>
         /// <param name="userFirebaseId"></param>
         /// <param name="review"></param>
-        public async Task AddReviewToTourist(string userFirebaseId, Review review)
+        public async Task AddReviewToTourist(string touristUserFirebaseId, Review review)
         {
             try
             {
-                var user = _userService.GetByFirebaseId(userFirebaseId);
-                review.ProfilePhotoUrl = user.ProfilePhotoUrl;
-                user.Reviews.Add(review);
-                await _userService.Update(user);
+                var guide = _userService.GetByFirebaseId(review.UserId);
+                var tourist = _userService.GetByFirebaseId(touristUserFirebaseId);
+
+                review.ProfilePhotoUrl = guide.ProfilePhotoUrl;
+                tourist.Reviews.Add(review);
+                await _userService.Update(tourist);
             }
             catch(Exception e)
             {

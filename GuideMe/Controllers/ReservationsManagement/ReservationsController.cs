@@ -134,7 +134,9 @@ namespace GuideMe.Controllers.ReservationsManagement
                     UserId = experienceReservation.GuideUserId,
                     UserName = $"{experienceReservation.GuideFirstName} {experienceReservation.GuideLastName}"
                 };
-                await _experienceService.AddReviewToTourist(experienceReservation.GuideUserId, userRatingReview);
+                experienceReservation.RatingForTourist = userRatingReview;
+                await _reservationsService.UpdateReservation(experienceReservation);
+                await _experienceService.AddReviewToTourist(experienceReservation.TouristUserId, userRatingReview);
                 return Ok();
             }
             catch (Exception e) { return BadRequest(e.Message); }

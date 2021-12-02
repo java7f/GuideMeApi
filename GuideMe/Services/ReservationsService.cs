@@ -118,7 +118,8 @@ namespace GuideMe.Services
                 TouristLastName = offer.TouristLastName,
                 GuideFirstName = offer.GuideFirstName,
                 GuideLastName = offer.GuideLastName,
-                ExperienceRating = new Review()
+                ExperienceRating = new Review(),
+                RatingForTourist = new Review()
             };
 
             await InsertReservation(newReservation);
