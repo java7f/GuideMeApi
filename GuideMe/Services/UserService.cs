@@ -36,6 +36,32 @@ namespace GuideMe.Services
             return user;
         }
         
+        public string GetTouristInstanceId(string userId)
+        {
+            string instanceID = _userRepository.FindById(userId).TouristInstanceId;
+            return instanceID;
+        }
+        
+        public string GetGuideInstanceId(string userId)
+        {
+            string instanceID = _userRepository.FindById(userId).GuideInstanceId;
+            return instanceID;
+        }
+        
+        public async Task SaveTouristInstanceId(string instanceId, string userId)
+        {
+            User user = _userRepository.FindById(userId);
+            user.TouristInstanceId = instanceId;
+            await Update(user);
+        }
+
+        public async Task SaveGuideInstanceId(string instanceId, string userId)
+        {
+            User user = _userRepository.FindById(userId);
+            user.GuideInstanceId = instanceId;
+            await Update(user);
+        }
+        
         [Obsolete]
         public User GetByEmail(string userEmail)
         {

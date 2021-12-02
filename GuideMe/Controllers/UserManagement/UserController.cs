@@ -47,6 +47,52 @@ namespace GuideMe.Controllers.UserManagement
             else return NotFound();
         }
         
+        [HttpGet("getTouristInstanceId/{userId}")]
+        public IActionResult GetTouristInstanceId(string userId)
+        {
+            var instanceId = _userService.GetTouristInstanceId(userId);
+
+            if (instanceId != null) return Ok(instanceId);
+            else return NotFound();
+        }
+        
+        [HttpGet("getGuideInstanceId/{userId}")]
+        public IActionResult GetGuideInstanceId(string userId)
+        {
+            var instanceId = _userService.GetTouristInstanceId(userId);
+
+            if (instanceId != null) return Ok(instanceId);
+            else return NotFound();
+        }
+        
+        [HttpGet("saveGuideInstanceId/{instanceId}/{userId}")]
+        public async Task<IActionResult> SaveGuideInstanceId(string instanceId, string userId)
+        {
+            try
+            {
+                 await _userService.SaveGuideInstanceId(instanceId, userId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("saveTouristInstanceId/{instanceId}/{userId}")]
+        public async Task<IActionResult> SaveTouristInstanceId(string instanceId, string userId)
+        {
+            try
+            {
+                await _userService.SaveTouristInstanceId(instanceId, userId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {

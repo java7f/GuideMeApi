@@ -19,6 +19,8 @@ namespace GuideMe.Models.Account
         public DateTime Birthdate { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
+        public string TouristInstanceId { get; set; }
+        public string GuideInstanceId { get; set; }
         public string AboutUser { get; set; }
         public List<Review> Reviews { get; set; } = new List<Review>();
         public string ProfilePhotoUrl { get; set; }
