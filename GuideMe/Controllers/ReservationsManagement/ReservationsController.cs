@@ -1,4 +1,5 @@
-﻿using GuideMe.Models.Experiences;
+﻿using GuideMe.Models.Account;
+using GuideMe.Models.Experiences;
 using GuideMe.Services;
 using GuideMe.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -94,6 +95,7 @@ namespace GuideMe.Controllers.ReservationsManagement
 
             try
             {
+                experienceReservation.ExperienceRating.RatingValue = 0;
                 await _reservationsService.InsertReservation(experienceReservation);
                 return Ok();
             }
@@ -111,7 +113,28 @@ namespace GuideMe.Controllers.ReservationsManagement
                 experienceReservation.ExperienceRating.UserId = experienceReservation.TouristUserId;
                 experienceReservation.ExperienceRating.UserName = $"{experienceReservation.TouristFirstName} {experienceReservation.TouristLastName}";
                 await _reservationsService.UpdateReservation(experienceReservation);
-                await _experienceService.AddReviewToExperience(experienceReservation.GuideExperienceId, experienceReservation.ExperienceRating);
+                await _experienceService.AddReviewToExperience(experienceReservation.GuideExperienceId, experienceReservation.TouristUserId, experienceReservation.ExperienceRating);
+                return Ok();
+            }
+            catch (Exception e) { return BadRequest(e.Message); }
+        }
+
+        [HttpPut("rateTourist")]
+        public async Task<IActionResult> RateTourist([FromBody] ExperienceReservation experienceReservation)
+        {
+            if (experienceReservation == null)
+                return BadRequest();
+
+            try
+            {
+                Review userRatingReview = new Review
+                {
+                    RatingComment = experienceReservation.ExperienceRating.RatingComment,
+                    RatingValue = experienceReservation.ExperienceRating.RatingValue,
+                    UserId = experienceReservation.GuideUserId,
+                    UserName = $"{experienceReservation.GuideFirstName} {experienceReservation.GuideLastName}"
+                };
+                await _experienceService.AddReviewToTourist(experienceReservation.GuideUserId, userRatingReview);
                 return Ok();
             }
             catch (Exception e) { return BadRequest(e.Message); }
