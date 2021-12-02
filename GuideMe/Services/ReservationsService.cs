@@ -29,11 +29,10 @@ namespace GuideMe.Services
             return await _experienceReservationRepository.FindByIdAsync(id);
         }
 
-        public List<ExperienceReservation> GetPastReservationsForTourist(string email)
+        public List<ExperienceReservation> GetPastReservationsForTourist(string touristUserId)
         {
-            var user = _userService.GetByEmail(email);
             return _experienceReservationRepository.AsQueryable()
-                .Where(reservation => reservation.TouristUserId == user.Id && reservation.ToDate < DateTime.Now).ToList();
+                .Where(reservation => reservation.TouristUserId == touristUserId && reservation.ToDate < DateTime.Now).ToList();
         }
 
         public List<ExperienceReservation> GetPastReservationsForGuide(string guideId)

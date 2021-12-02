@@ -24,13 +24,13 @@ namespace GuideMe.Controllers.ReservationsManagement
             _experienceService = experienceService;
         }
 
-        [HttpGet("getPastReservationsTourist/{email}")]
-        public IActionResult GetPastReservationsForTourist(string email)
+        [HttpGet("getPastReservationsTourist/{touristUserId}")]
+        public IActionResult GetPastReservationsForTourist(string touristUserId)
         {
-            if (string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(touristUserId))
                 return BadRequest();
 
-            var pastExperiences = _reservationsService.GetPastReservationsForTourist(email);
+            var pastExperiences = _reservationsService.GetPastReservationsForTourist(touristUserId);
 
 
             return Ok(pastExperiences);
@@ -142,7 +142,7 @@ namespace GuideMe.Controllers.ReservationsManagement
 
         #region Reservation Requests
 
-        [HttpGet("requestForTourist")]
+        [HttpGet("requestForTourist/{touristId}")]
         public IActionResult GetReservationRequestsForTourist(string touristId)
         {
             if (string.IsNullOrEmpty(touristId))
