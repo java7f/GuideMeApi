@@ -125,7 +125,14 @@ namespace GuideMe.Services
         
         public List<Audioguide> GetProximityAudioguides(string locationId, List<string> beaconIds)
         {
-            return _audioguidesRepository.FindAll().Where(audio => audio.LocationId == locationId && beaconIds.Contains(audio.MacAddress)).ToList();
+            var sortedAudioguides = new List<Audioguide>();
+            foreach(var id in beaconIds)
+            {
+                var audio = _audioguidesRepository.FindOne(a => a.LocationId == locationId && a.MacAddress == id);
+                if (audio != null)
+                    sortedAudioguides.Add(audio);
+            }
+            return sortedAudioguides;
         }
 
         #endregion
