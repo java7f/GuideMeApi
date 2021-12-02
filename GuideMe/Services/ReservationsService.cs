@@ -24,9 +24,9 @@ namespace GuideMe.Services
         }
 
         #region Experience Reservations
-        public ExperienceReservation GetReservation(string id)
+        public async Task<ExperienceReservation> GetReservation(string id)
         {
-            return _experienceReservationRepository.FindById(id);
+            return await _experienceReservationRepository.FindByIdAsync(id);
         }
 
         public List<ExperienceReservation> GetPastReservationsForTourist(string email)
@@ -42,10 +42,10 @@ namespace GuideMe.Services
                 .Where(reservation => reservation.GuideUserId == guideId && reservation.ToDate < DateTime.Now).ToList();
         }
 
-        public List<ExperienceReservation> GetGuideReservations(string guideId)
+        public List<ExperienceReservation> GetGuideReservations(string guideFirebaseUserId)
         {
             return _experienceReservationRepository.AsQueryable()
-                .Where(reservation => reservation.GuideUserId == guideId && reservation.ToDate > DateTime.Now)
+                .Where(reservation => reservation.GuideUserId == guideFirebaseUserId && reservation.ToDate > DateTime.Now)
                 .OrderBy(r => r.FromDate)
                 .ToList();
         }
@@ -119,6 +119,7 @@ namespace GuideMe.Services
                 TouristLastName = offer.TouristLastName,
                 GuideFirstName = offer.GuideFirstName,
                 GuideLastName = offer.GuideLastName,
+                ExperienceRating = new Review()
             };
 
             await InsertReservation(newReservation);

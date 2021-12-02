@@ -10,14 +10,23 @@ namespace GuideMe.Services
     public class GuideExperienceViewDataService
     {
         private readonly IMongoRepository<GuideExperienceViewData> _guideExperienceViewDataRepository;
-        public GuideExperienceViewDataService(IMongoRepository<GuideExperienceViewData> guideExperienceViewDataRepository)
+        private readonly IMongoRepository<GuideExperience> _guideExperienceRepository;
+
+        public GuideExperienceViewDataService(IMongoRepository<GuideExperienceViewData> guideExperienceViewDataRepository,
+            IMongoRepository<GuideExperience> guideExperienceRepository)
         {
             _guideExperienceViewDataRepository = guideExperienceViewDataRepository;
+            _guideExperienceRepository = guideExperienceRepository;
         }
 
         public GuideExperienceViewData Get(string experienceId)
         {
             return _guideExperienceViewDataRepository.FindById(experienceId);
+        }
+
+        public GuideExperienceViewData GetByGuideFirebaseId(string firebaseId)
+        {
+            return _guideExperienceViewDataRepository.FindOne(ex => ex.GuideFirebaseId == firebaseId);
         }
 
         public IEnumerable<GuideExperienceViewData> GetExperiences(string location, string currentTouristId)
@@ -48,6 +57,24 @@ namespace GuideMe.Services
             var experience = Get(experienceId);
             experience.GuideRating = newRating;
             await Update(experience);
+        }
+
+        public async Task UpdateExperiencePhoto(string fileUrl, string firebaseUserId)
+        {
+            var guideExpViewData = GetByGuideFirebaseId(firebaseUserId);
+            var guideExp = _guideExperienceRepository.FindOne(exp => exp.GuideFirebaseId == firebaseUserId);
+
+            if (guideExpViewData != null)
+            {
+                guideExpViewData.GuidePhotoUrl = fileUrl;
+                await Update(guideExpViewData);
+            }
+
+            if (guideExp != null)
+            {
+                guideExp.GuidePhotoUrl = fileUrl;
+                await _guideExperienceRepository.ReplaceOneAsync(guideExp);
+            }
         }
     }
 }

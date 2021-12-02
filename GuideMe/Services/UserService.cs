@@ -13,10 +13,15 @@ namespace GuideMe.Services
     {
         private readonly IMongoRepository<User> _userRepository;
         private readonly FileManagerService _fileManagerService;
-        public UserService(IMongoRepository<User> userRepository, FileManagerService fileManagerService)
+        private readonly GuideExperienceViewDataService _guideExperienceViewDataService;
+
+        public UserService(IMongoRepository<User> userRepository, 
+            FileManagerService fileManagerService,
+            GuideExperienceViewDataService guideExperienceViewDataService)
         {
             _userRepository = userRepository;
             _fileManagerService = fileManagerService;
+            _guideExperienceViewDataService = guideExperienceViewDataService;
         }
 
         public User GetByFirebaseId(string firebaseId)
@@ -52,11 +57,14 @@ namespace GuideMe.Services
             await _userRepository.ReplaceOneAsync(user);
         }
 
-        public async Task<String> InsertProfilePhoto(string email, IFormFile profile_photo)
+        public async Task<string> InsertProfilePhoto(string email, IFormFile profile_photo)
         {
             var file_url = await _fileManagerService.UploadProfilePhoto(profile_photo);
             var user = GetByEmail(email);
+
             user.ProfilePhotoUrl = file_url;
+            await _guideExperienceViewDataService.UpdateExperiencePhoto(file_url, user.FirebaseUserId);
+
             await Update(user);
             return file_url;
         }

@@ -89,12 +89,16 @@ namespace GuideMe.Services
             
         }
 
-        public async Task AddReviewToExperience(string guideExperienceId, Review review)
+        public async Task AddReviewToExperience(string guideExperienceId, string touristUserId, Review review)
         {
             try
             {
                 var experience = _guideExperienceRepository.FindById(guideExperienceId);
+                var user = _userService.GetByFirebaseId(touristUserId);
+
+                review.ProfilePhotoUrl = user.ProfilePhotoUrl;
                 experience.GuideReviews.Add(review);
+
                 await _guideExperienceRepository.ReplaceOneAsync(experience);
                 float totalRating = 0.0f;
                 foreach(var rev in experience.GuideReviews)
@@ -110,6 +114,27 @@ namespace GuideMe.Services
                 throw new Exception(e.Message);
             }
 
+        }
+
+        /// <summary>
+        /// Adds new review to user's reviews list. 
+        /// Rating calculation is done in Android Studio with the <c>calculateUserRating</c> method from the <c>ProfileViewModel</c>.
+        /// </summary>
+        /// <param name="userFirebaseId"></param>
+        /// <param name="review"></param>
+        public async Task AddReviewToTourist(string userFirebaseId, Review review)
+        {
+            try
+            {
+                var user = _userService.GetByFirebaseId(userFirebaseId);
+                review.ProfilePhotoUrl = user.ProfilePhotoUrl;
+                user.Reviews.Add(review);
+                await _userService.Update(user);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }
