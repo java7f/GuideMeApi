@@ -38,26 +38,26 @@ namespace GuideMe.Services
         
         public string GetTouristInstanceId(string userId)
         {
-            string instanceID = _userRepository.FindById(userId).TouristInstanceId;
+            string instanceID = _userRepository.FindOne(user => user.FirebaseUserId == userId).TouristInstanceId;
             return instanceID;
         }
         
         public string GetGuideInstanceId(string userId)
         {
-            string instanceID = _userRepository.FindById(userId).GuideInstanceId;
+            string instanceID = _userRepository.FindOne(user => user.FirebaseUserId == userId).GuideInstanceId;
             return instanceID;
         }
         
         public async Task SaveTouristInstanceId(string instanceId, string userId)
         {
-            User user = _userRepository.FindById(userId);
+            User user = _userRepository.FindOne(user => user.FirebaseUserId == userId);
             user.TouristInstanceId = instanceId;
             await Update(user);
         }
 
         public async Task SaveGuideInstanceId(string instanceId, string userId)
         {
-            User user = _userRepository.FindById(userId);
+            User user = _userRepository.FindOne(user => user.FirebaseUserId == userId);
             user.GuideInstanceId = instanceId;
             await Update(user);
         }
