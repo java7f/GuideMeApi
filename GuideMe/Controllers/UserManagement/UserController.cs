@@ -59,7 +59,7 @@ namespace GuideMe.Controllers.UserManagement
         [HttpGet("getGuideInstanceId/{userId}")]
         public IActionResult GetGuideInstanceId(string userId)
         {
-            var instanceId = _userService.GetTouristInstanceId(userId);
+            var instanceId = _userService.GetGuideInstanceId(userId);
 
             if (instanceId != null) return Ok(instanceId);
             else return NotFound();
